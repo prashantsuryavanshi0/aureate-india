@@ -578,25 +578,68 @@
     .whatsapp:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 20px 46px rgba(18,140,74,.32); }
     .whatsapp svg { width: 29px; height: 29px; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,.18)); }
     .modal {
-      position: fixed; inset: 0; z-index: 120; display: none; place-items: center; padding: 18px; background: rgba(0,0,0,.62);
+      position: fixed; inset: 0; z-index: 120; display: none; place-items: center; padding: 18px;
+      background:
+        radial-gradient(circle at 16% 18%, rgba(215,160,67,.18), transparent 28%),
+        radial-gradient(circle at 82% 12%, rgba(82,112,98,.18), transparent 30%),
+        rgba(0,0,0,.68);
+      backdrop-filter: blur(12px) saturate(1.05);
+      perspective: 1400px;
     }
     .modal.open { display: grid; }
     .modal-card {
-      width: min(1180px, 100%); max-height: 90vh; overflow: auto; background: var(--vellum); border-radius: var(--radius);
-      box-shadow: var(--shadow); display: grid; grid-template-columns: .72fr 1.28fr;
+      width: min(1320px, 96vw); max-height: 90vh; overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,250,241,.98), rgba(245,235,218,.98));
+      border-radius: 14px; border: 1px solid rgba(255,255,255,.5);
+      box-shadow: 0 42px 120px rgba(0,0,0,.44), inset 0 1px rgba(255,255,255,.58);
+      display: grid; grid-template-columns: minmax(360px, .78fr) minmax(560px, 1.22fr);
+      transform-style: preserve-3d; animation: modalRise .55s cubic-bezier(.2,.8,.2,1) both;
     }
-    .modal-image { min-height: 100%; position: sticky; top: 0; height: 90vh; }
-    .modal-content { padding: clamp(24px, 4vw, 44px); padding-bottom: 18px; }
-    .modal-top { display: flex; justify-content: space-between; gap: 20px; align-items: start; }
-    .modal-close { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); background: transparent; flex: 0 0 auto; }
-    .modal-layout { display: grid; grid-template-columns: .68fr 1fr; gap: 22px; align-items: start; margin-top: 22px; }
-    .route-map {
-      position: relative; min-height: clamp(280px, 42vh, 390px); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+    .modal-image {
+      min-height: 100%; position: relative; height: 90vh; overflow: hidden; isolation: isolate;
+      background: #1b120b; transform: translateZ(34px);
+    }
+    .modal-image:before {
+      content: ""; position: absolute; inset: 0; z-index: 1;
       background:
-        radial-gradient(circle at 72% 22%, rgba(82,112,98,.25), transparent 24%),
-        radial-gradient(circle at 31% 58%, rgba(215,160,67,.22), transparent 26%),
-        linear-gradient(135deg, #1b1712, #352719 48%, #5d3d22);
-      color: #fff; box-shadow: 0 24px 80px rgba(51,32,18,.18);
+        linear-gradient(90deg, rgba(13,11,9,.1), transparent 36%, rgba(13,11,9,.62)),
+        radial-gradient(circle at 30% 22%, rgba(255,219,153,.24), transparent 28%);
+      pointer-events: none;
+    }
+    .modal-image:after {
+      content: ""; position: absolute; inset: auto 30px 30px 30px; z-index: 2; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent);
+      box-shadow: 0 0 34px rgba(215,160,67,.55);
+    }
+    .modal-image img { animation: modalImageDrift 13s ease-in-out infinite alternate; transform-origin: center; }
+    .modal-content {
+      position: relative; max-height: 90vh; overflow: auto; padding: clamp(28px, 4vw, 52px); padding-bottom: 34px;
+      background:
+        radial-gradient(circle at 84% 18%, rgba(215,160,67,.11), transparent 24%),
+        linear-gradient(110deg, rgba(255,255,255,.34), transparent 44%);
+    }
+    .modal-content:before {
+      content: ""; position: absolute; top: 20px; right: 84px; width: 150px; aspect-ratio: 1; border-radius: 50%;
+      border: 1px solid rgba(215,160,67,.28); transform: rotateX(67deg) rotateZ(-18deg); pointer-events: none;
+    }
+    .modal-top { display: flex; justify-content: space-between; gap: 20px; align-items: start; }
+    .modal-top h3 { font-size: clamp(40px, 4.2vw, 72px); line-height: .92; max-width: 780px; }
+    .modal-close {
+      width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(28,20,14,.16);
+      background: rgba(255,255,255,.44); flex: 0 0 auto; box-shadow: inset 0 1px rgba(255,255,255,.8);
+      transition: transform .25s ease, background .25s ease;
+    }
+    .modal-close:hover { transform: rotate(90deg) scale(1.04); background: #fff; }
+    .modal-layout { display: grid; grid-template-columns: .68fr 1.08fr; gap: clamp(22px, 3vw, 34px); align-items: start; margin-top: 28px; }
+    .route-map {
+      position: relative; min-height: clamp(360px, 48vh, 470px); border: 1px solid rgba(255,255,255,.16); border-radius: 10px; overflow: hidden;
+      background:
+        radial-gradient(circle at 72% 18%, rgba(82,112,98,.34), transparent 24%),
+        radial-gradient(circle at 30% 42%, rgba(215,160,67,.32), transparent 28%),
+        linear-gradient(135deg, #14100d, #342314 48%, #5b381c);
+      color: #fff; box-shadow: 0 32px 80px rgba(51,32,18,.28);
+      transform: perspective(960px) rotateX(3deg) rotateY(-2deg) translateZ(0);
+      transform-style: preserve-3d; animation: atlasFloat 8s ease-in-out infinite;
     }
     .route-map:before {
       content: ""; position: absolute; inset: 0; opacity: .26;
@@ -611,9 +654,9 @@
     }
     .route-map svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
     .route-map .map-line {
-      fill: none; stroke: rgba(247, 216, 150, .88); stroke-width: 2.45; stroke-linecap: round; stroke-linejoin: round;
+      fill: none; stroke: rgba(255, 221, 143, .95); stroke-width: 2.45; stroke-linecap: round; stroke-linejoin: round;
       stroke-dasharray: 900; stroke-dashoffset: 900; animation: drawRoute 1.45s ease forwards;
-      filter: drop-shadow(0 0 10px rgba(215,160,67,.55));
+      filter: drop-shadow(0 0 14px rgba(215,160,67,.68));
     }
     .route-map .map-line-shadow { fill: none; stroke: rgba(255,255,255,.16); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
     .route-map.ribbon .map-line { stroke-width: 2.25; }
@@ -621,7 +664,8 @@
     .map-pin {
       position: absolute; z-index: 2; transform: translate(-50%, -50%); width: 34px; height: 34px; border-radius: 50%;
       display: grid; place-items: center; background: var(--vellum); color: var(--ink); border: 2px solid rgba(215,160,67,.9);
-      font-size: 12px; font-weight: 800; box-shadow: 0 12px 32px rgba(0,0,0,.34); animation: pinRise .55s ease both;
+      font-size: 12px; font-weight: 800; box-shadow: 9px 11px 0 rgba(255,255,255,.14), 0 16px 34px rgba(0,0,0,.38);
+      animation: pinRise .55s ease both, pinPulse 3.5s ease-in-out infinite;
     }
     .route-map.ribbon .map-pin { width: 30px; height: 30px; font-size: 11px; }
     .map-pin.active { background: var(--saffron); color: #1a1208; transform: translate(-50%, -50%) scale(1.12); }
@@ -640,17 +684,22 @@
       border-radius: 999px; padding: 8px 11px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
     }
     .map-caption {
-      position: absolute; left: 16px; right: 16px; bottom: 16px; z-index: 3; padding: 14px 15px; border-radius: var(--radius);
-      border: 1px solid rgba(255,255,255,.18); background: rgba(13,11,9,.44); backdrop-filter: blur(14px);
+      position: absolute; left: 18px; right: 18px; bottom: 18px; z-index: 3; padding: 18px 20px; border-radius: 9px;
+      border: 1px solid rgba(255,255,255,.18); background: rgba(20,13,8,.72); backdrop-filter: blur(16px);
+      box-shadow: 0 18px 40px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.08);
     }
-    .map-caption strong { display: block; font-family: "Cormorant Garamond", serif; font-size: 26px; line-height: 1; }
-    .map-caption p { color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.5; margin-top: 7px; }
+    .map-caption strong { display: block; font-family: "Cormorant Garamond", serif; font-size: 34px; line-height: .95; }
+    .map-caption p { color: rgba(255,255,255,.74); font-size: 13px; line-height: 1.55; margin-top: 9px; max-width: 520px; }
     .modal-actions {
-      position: sticky; bottom: 0; z-index: 5; margin-top: 22px; padding: 14px 0 0;
-      background: linear-gradient(180deg, rgba(255,250,241,0), var(--vellum) 28%);
+      position: relative; z-index: 5; margin-top: 26px; padding: 0;
+      background: transparent;
     }
     @keyframes drawRoute { to { stroke-dashoffset: 0; } }
     @keyframes pinRise { from { opacity: 0; transform: translate(-50%, -35%) scale(.6); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+    @keyframes pinPulse { 50% { box-shadow: 9px 11px 0 rgba(255,255,255,.1), 0 20px 42px rgba(215,160,67,.32); } }
+    @keyframes atlasFloat { 50% { transform: perspective(960px) rotateX(2deg) rotateY(1deg) translateY(-5px); } }
+    @keyframes modalRise { from { opacity: 0; transform: translateY(28px) rotateX(5deg) scale(.985); } to { opacity: 1; transform: translateY(0) rotateX(0) scale(1); } }
+    @keyframes modalImageDrift { from { transform: scale(1.04) translate3d(-1.5%, 0, 0); } to { transform: scale(1.12) translate3d(2%, -1%, 0); } }
     .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     @media (prefers-reduced-motion: reduce) {
@@ -677,8 +726,9 @@
       .section-head, .planner-grid, .footer-grid { grid-template-columns: 1fr; }
       .promise-grid, .journey-grid, .why-grid, .testimonial-grid, .stats { grid-template-columns: 1fr 1fr; }
       .tools { grid-template-columns: 1fr 1fr; position: static; }
-      .modal-card { grid-template-columns: 1fr; }
-      .modal-image { position: relative; height: 260px; min-height: 260px; }
+      .modal-card { grid-template-columns: 1fr; overflow: auto; }
+      .modal-image { position: relative; height: 300px; min-height: 300px; transform: none; }
+      .modal-content { max-height: none; overflow: visible; }
       .modal-layout { grid-template-columns: 1fr; }
       .planner-grid { gap: 18px; }
       .planner .panel {
@@ -714,7 +764,9 @@
       .drawer a { font-size: 30px; }
       .modal { padding: 8px; align-items: start; }
       .modal-card { max-height: 96vh; }
-      .route-map { min-height: 300px; }
+      .modal-top h3 { font-size: 38px; }
+      .route-map { min-height: 360px; transform: none; animation: none; }
+      .map-caption strong { font-size: 28px; }
     }
   </style>
 </head>
@@ -1049,8 +1101,8 @@
         ? stops.map((stop, i) => {
             const t = stops.length === 1 ? 0 : i / (stops.length - 1);
             const wave = stops.length > 6 ? 2.15 : 1.35;
-            const y = 26 + Math.sin(t * Math.PI * wave) * 13 + (i % 2 ? 8 : 0);
-            return [14 + t * 72, Math.max(16, Math.min(54, y))];
+            const y = 23 + Math.sin(t * Math.PI * wave) * 9 + (i % 2 ? 5 : 0);
+            return [13 + t * 74, Math.max(13, Math.min(43, y))];
           })
         : stops.map(stop => {
             const base = cityCoords[stop] || fallbackCoord(stop);
