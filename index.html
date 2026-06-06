@@ -130,22 +130,32 @@
       perspective: 1200px;
     }
     .hero:before {
-      content: ""; position: absolute; inset: 0;
+      content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background:
-        linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.18) 38%, rgba(0,0,0,.62)),
-        url("https://elevated-india-ecru.vercel.app/images/experiences_hero_1776334780617.png") center/cover;
-      transform: scale(1.06); animation: heroDrift 16s ease-in-out infinite alternate;
+        linear-gradient(180deg, rgba(0,0,0,.58), rgba(0,0,0,.18) 38%, rgba(0,0,0,.66)),
+        linear-gradient(90deg, rgba(0,0,0,.55), rgba(0,0,0,.06) 64%);
     }
     .hero:after {
-      content: ""; position: absolute; inset: 0;
+      content: ""; position: absolute; inset: 0; z-index: 1;
       background:
         radial-gradient(circle at 70% 25%, rgba(215,160,67,.22), transparent 28%),
         linear-gradient(90deg, rgba(0,0,0,.34), transparent 55%);
       mix-blend-mode: screen; pointer-events: none;
     }
-    @keyframes heroDrift { from { transform: scale(1.06) translateY(0); } to { transform: scale(1.12) translateY(-18px); } }
+    .hero-backgrounds { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: #111; }
+    .hero-bg {
+      position: absolute; inset: -3%; opacity: 0; background-position: center; background-size: cover;
+      transform: scale(1.06) translateY(0); transition: opacity 1s ease, transform 2.2s ease;
+      filter: saturate(1.08) contrast(1.04); will-change: opacity, transform;
+    }
+    .hero-bg.active { opacity: 1; transform: scale(1.13) translateY(-14px); }
+    .hero-bg.was-active { opacity: 0; transform: scale(1.16) translateY(-20px); }
+    .hero-bg:after {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 24%, rgba(255,255,255,.08), transparent 30%);
+    }
     .hero-inner {
-      position: relative; z-index: 1; width: min(1220px, calc(100% - 36px)); margin: 0 auto; padding: 118px 0 34px;
+      position: relative; z-index: 2; width: min(1220px, calc(100% - 36px)); margin: 0 auto; padding: 118px 0 34px;
       display: grid; grid-template-columns: minmax(0, .9fr) minmax(390px, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center;
       flex: 1;
     }
@@ -845,6 +855,14 @@
 
   <main id="top">
     <header class="hero">
+      <div class="hero-backgrounds" aria-hidden="true">
+        <div class="hero-bg active" style="background-image:url('https://elevated-india-ecru.vercel.app/images/experiences_hero_1776334780617.png')"></div>
+        <div class="hero-bg" style="background-image:url('https://elevated-india-ecru.vercel.app/images/rajasthan_palace_exterior_1776272664878.png')"></div>
+        <div class="hero-bg" style="background-image:url('https://elevated-india-ecru.vercel.app/images/kerala_backwaters_1776272518771.png')"></div>
+        <div class="hero-bg" style="background-image:url('https://elevated-india-ecru.vercel.app/images/tiger_safari_1776272603448.png')"></div>
+        <div class="hero-bg" style="background-image:url('https://elevated-india-ecru.vercel.app/images/varanasi_ghats_1776272579374.png')"></div>
+        <div class="hero-bg" style="background-image:url('https://elevated-india-ecru.vercel.app/images/mehrangarh-fort-jodhpur.jpeg')"></div>
+      </div>
       <div class="hero-inner">
         <div class="hero-copy">
           <div class="premium-note reveal">Journey Atelier · India & Beyond · 2026</div>
@@ -1285,6 +1303,18 @@
     const nav = document.getElementById("nav");
     const progress = document.getElementById("progress");
     const hero = document.querySelector(".hero");
+    const heroBgs = [...document.querySelectorAll(".hero-bg")];
+    let heroBgIndex = 0;
+    if (heroBgs.length > 1 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setInterval(() => {
+        const previous = heroBgs[heroBgIndex];
+        heroBgIndex = (heroBgIndex + 1) % heroBgs.length;
+        heroBgs.forEach(bg => bg.classList.remove("was-active"));
+        previous.classList.remove("active");
+        previous.classList.add("was-active");
+        heroBgs[heroBgIndex].classList.add("active");
+      }, 2000);
+    }
     const heroStage = document.getElementById("heroStage");
     let heroTilt = { x: 0, y: 0, scroll: 0 };
     let tiltQueued = false;
